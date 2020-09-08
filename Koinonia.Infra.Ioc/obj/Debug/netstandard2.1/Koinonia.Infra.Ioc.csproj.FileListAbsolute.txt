@@ -1,0 +1,16 @@
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Infra.Ioc.deps.json
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Infra.Ioc.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Infra.Ioc.pdb
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Application.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Domain.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Infra.Data.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Application.pdb
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Domain.pdb
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\bin\Debug\netstandard2.1\Koinonia.Infra.Data.pdb
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.csprojAssemblyReference.cache
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.AssemblyInfoInputs.cache
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.AssemblyInfo.cs
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.csproj.CoreCompileInputs.cache
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.csproj.CopyComplete
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Infra.Ioc\obj\Debug\netstandard2.1\Koinonia.Infra.Ioc.pdb
