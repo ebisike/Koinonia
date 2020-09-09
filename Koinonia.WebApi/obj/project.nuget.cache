@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BdoUOX3ERyjMoSrmZgdmCvbx7qMQw3bRDWDXZ/BdTWWQt9ttp3p/9pY/uzE8vZg3704pQJ+n6MPOY1wVWJsRgA==",
+  "dgSpecHash": "JPPrtDXBiRWXblBLI0EhjJIPOGeg2FLArCA8wBssAqgW3/5UmTs2PwkQjWFKy3+wEgpROaK6rw+e3BUeA4knmg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.WebApi\\Koinonia.WebApi.csproj",
+  "projectFilePath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.WebApi\\Koinonia.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Shopinverse.com\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.8\\microsoft.aspnetcore.cryptography.internal.3.1.8.nupkg.sha512",
     "C:\\Users\\Shopinverse.com\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.8\\microsoft.aspnetcore.cryptography.keyderivation.3.1.8.nupkg.sha512",

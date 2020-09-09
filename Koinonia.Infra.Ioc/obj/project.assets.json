@@ -7153,11 +7153,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Infra.Ioc\\Koinonia.Infra.Ioc.csproj",
+      "projectUniqueName": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Infra.Ioc\\Koinonia.Infra.Ioc.csproj",
       "projectName": "Koinonia.Infra.Ioc",
-      "projectPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Infra.Ioc\\Koinonia.Infra.Ioc.csproj",
+      "projectPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Infra.Ioc\\Koinonia.Infra.Ioc.csproj",
       "packagesPath": "C:\\Users\\Shopinverse.com\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Infra.Ioc\\obj\\",
+      "outputPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Infra.Ioc\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -7178,8 +7178,8 @@
       "frameworks": {
         "netstandard2.1": {
           "projectReferences": {
-            "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj": {
-              "projectPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj"
+            "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj": {
+              "projectPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj"
             }
           }
         }

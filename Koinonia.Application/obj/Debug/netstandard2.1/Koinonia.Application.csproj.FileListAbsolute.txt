@@ -12,3 +12,17 @@ C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Application\obj\Debug\ne
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.csproj.CopyComplete
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.dll
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.pdb
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Application.deps.json
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Application.dll
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Application.pdb
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Domain.dll
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Infra.Data.dll
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Domain.pdb
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\bin\Debug\netstandard2.1\Koinonia.Infra.Data.pdb
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.csprojAssemblyReference.cache
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.AssemblyInfoInputs.cache
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.AssemblyInfo.cs
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.csproj.CoreCompileInputs.cache
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.csproj.CopyComplete
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.dll
+C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.Application\obj\Debug\netstandard2.1\Koinonia.Application.pdb
