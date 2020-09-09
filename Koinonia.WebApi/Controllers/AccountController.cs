@@ -68,21 +68,27 @@ namespace Koinonia.WebApi.Controllers
                     //get the AppUser by Id
                     var CreatedUser = GetUserByEmail(model.Email).Result;
 
-                    //build the koinonia user entity
-                    KoinoniaUserModel koinoniaUsers = new KoinoniaUserModel()
+                    //assign the user to a role
+                    var roleResult = await userManager.AddToRoleAsync(CreatedUser, "user");
+                    if (roleResult.Succeeded)
                     {
-                        Id = Guid.Parse(CreatedUser.Id),
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Gender = model.Gender,
-                        stateOfOrigin = model.StateOfOrigin,
-                    };
-                    //pass the model to the UserService
-                    userService.AddNewUser(koinoniaUsers).Wait();
+                        //build the koinonia user entity
+                        KoinoniaUserModel koinoniaUsers = new KoinoniaUserModel()
+                        {
+                            Id = Guid.Parse(CreatedUser.Id),
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            Gender = model.Gender,
+                            stateOfOrigin = model.StateOfOrigin,
+                        };
+                        //pass the model to the UserService
+                        userService.AddNewUser(koinoniaUsers).Wait();
 
-                    //call method to auto follow the leadpastor
-                    AutoFollow(koinoniaUsers.Id).Wait();
-                    return Ok();
+                        //call method to auto follow the leadpastor
+                        AutoFollow(koinoniaUsers.Id).Wait();
+                        return Ok();
+                    }
+                    return BadRequest(new { message = "User was not added to a role" });
                 }
                 return BadRequest("Registration Failed");
             }
