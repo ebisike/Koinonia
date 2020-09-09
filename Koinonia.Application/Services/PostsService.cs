@@ -16,23 +16,15 @@ namespace Koinonia.Application.Services
 {
     public class PostsService : Repository<Posts>, IPostsService
     {
-        private readonly IRepository<Posts> postRepo;        
-
-        private KoinoniaUsers koinoniaUsers;
-
-        //private readonly KoinoniaDbContext _context;
+        private readonly IRepository<Posts> postRepo;
 
         public PostsService(KoinoniaDbContext context, IRepository<Posts> PostRepo) : base(context)
         {
             postRepo = PostRepo;
         }
-        public async Task<Posts> AddNewUserPost(PostsViewModel model, string fileName, Guid userId)
+        public async Task<Posts> AddNewUserPost(PostsViewModel model, string fileName)
         {
-            //fetch the koinoniaUser id
-            //koinoniaUsers = applicationUser.GetApplicationUser(userId);
-
-            //throw new NotImplementedException();
-            //create a new instance of the entity post
+           //create a new instance of the entity post
 
             Posts userPost = new Posts()
             {
@@ -40,7 +32,8 @@ namespace Koinonia.Application.Services
                 DatePosted = model.DatePosted,
                 Content = model.Content,
                 ImageFileName = fileName,
-                UserId = userId
+                PostCategory = model.PostCategory,
+                UserId = model.userId
             };
             var added = await postRepo.AddNewAsync(userPost);
             if(added != null)
@@ -57,16 +50,37 @@ namespace Koinonia.Application.Services
             postRepo.SaveChanges(); 
         }
 
-        public IQueryable<Posts> GetAllPosts()
+        public IQueryable<Posts> GetAllChurchNews()
         {
-            var posts = _context.Post
+            var ChurchNews = _context.Post
+                .Where(x => x.PostCategory == Category.News)
+                .Include(x => x.User)
+                .Include(x => x.PostLikes)
+                .Include(x => x.PostComments);
+
+            return ChurchNews;
+        }
+
+        public IQueryable<Posts> GetAllTestimonies()
+        {
+            var Testimonies = _context.Post
+                .Where(x => x.PostCategory == Category.Testimony)
+                .Include(x => x.User)
+                .Include(x => x.PostLikes)
+                .Include(x => x.PostComments);
+
+            return Testimonies;
+        }
+
+        public IQueryable<Posts> GetAllUserStories()
+        {
+            var UserStories = _context.Post
+                .Where(x => x.PostCategory == Category.UserStories)
                 .Include(u => u.User)
                 .Include(l => l.PostLikes)
-                .Include(c => c.PostComments);
+                .Include(c => c.PostComments);                   
 
-            //var posts = _context.Post.Where(v => v.Visibility == Visibility.Everyone);            
-
-            return posts;
+            return UserStories;
         }
 
         public async Task<Posts> GetPost(Guid PostId)
@@ -84,6 +98,24 @@ namespace Koinonia.Application.Services
         public PostCommentsViewModel GetPostComments(Guid PostId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Posts> UpdatePost(PostsViewModel model)
+        {
+            //fetch the old post
+            var post = postRepo.Get(model.PostId);
+
+            //update post properties
+            post.Content = model.Content;
+            post.DatePosted = DateTime.Now;
+            post.ImageFileName = model.ExistingPhotoPath;
+            post.PostCategory = model.PostCategory;
+            post.Visibility = model.VisibilityStatus;
+            post.UserId = model.userId;
+
+            postRepo.Update(post);
+            await postRepo.SaveChangesAsync();
+            return post;
         }
     }
 }

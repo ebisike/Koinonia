@@ -16,20 +16,16 @@ namespace Koinonia.WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class PostsLikesController : ControllerBase
+    public class LikesController : ControllerBase
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly ILikesService likesService;       
+        private readonly ILikesService likesService;
 
-        private AppUser _user;
-
-        public PostsLikesController(UserManager<AppUser> userManager,
+        public LikesController(UserManager<AppUser> userManager,
             ILikesService likesService)
         {
             this.userManager = userManager;
             this.likesService = likesService;
-
-            _user = GetUser().Result;
         }
 
         private async Task<AppUser> GetUser()

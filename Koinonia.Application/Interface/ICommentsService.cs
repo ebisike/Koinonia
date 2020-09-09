@@ -12,8 +12,6 @@ namespace Koinonia.Application.Interface
     public interface ICommentsService : IRepository<Comments>
     {
         Task<Comments> CommentOnPost(CommentsViewModel model);
-        Task<Comments> CommentOnNews(CommentsViewModel model);
-        Task<Comments> CommentOnTestimony(CommentsViewModel model);
         IQueryable<Posts> GetPostComments(Guid PostId);
     }
 }

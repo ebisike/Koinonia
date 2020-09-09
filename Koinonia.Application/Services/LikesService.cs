@@ -20,11 +20,6 @@ namespace Koinonia.Application.Services
             this.likesRepo = likesRepo;
         }
 
-        public Task<Likes> LikeANews(LikesViewModel model)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Likes> LikeAPost(LikesViewModel model)
         {
             var like = new Likes()
@@ -36,11 +31,6 @@ namespace Koinonia.Application.Services
             await likesRepo.AddNewAsync(like);
             await likesRepo.SaveChangesAsync();
             return like;
-        }
-
-        public Task<Likes> LikeATestimony(LikesViewModel model)
-        {
-            throw new NotImplementedException();
         }
     }
 }

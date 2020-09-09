@@ -22,55 +22,26 @@ namespace Koinonia.Application.Services
             commentRepo = CommentRepo;
         }
 
-        public async Task<Comments> CommentOnNews(CommentsViewModel model)
-        {
-            var usercomment = new Comments()
-            {
-                NewsId = model.PostId,
-                userId = model.userId,
-                DateCommented = DateTime.Now,
-                Usercomment = model.UserComment
-            };
-
-            await commentRepo.AddNewAsync(usercomment);
-            await commentRepo.SaveChangesAsync();
-            return usercomment;
-        }
-
         public async Task<Comments> CommentOnPost(CommentsViewModel model)
         {
             var usercomment = new Comments()
             {
                 Usercomment = model.UserComment,
                 PostId = model.PostId,
-                userId = model.userId,
+                UserId = model.userId,
                 DateCommented = DateTime.Now
             };
 
             await commentRepo.AddNewAsync(usercomment);
             await commentRepo.SaveChangesAsync();
             return usercomment;
-        }
-
-        public async Task<Comments> CommentOnTestimony(CommentsViewModel model)
-        {
-            var usercomment = new Comments()
-            {
-                Usercomment = model.UserComment,
-                userId = model.userId,
-                PostId = model.PostId,
-                DateCommented = DateTime.Now
-            };
-            await commentRepo.AddNewAsync(usercomment);
-            await commentRepo.SaveChangesAsync();
-            return usercomment;
-        }
+        }        
 
         public IQueryable<Posts> GetPostComments(Guid PostId)
         {
             var comments = _context.Comment
                 .Where(x => x.Id == PostId)
-                .Select(x => x.post)
+                .Select(x => x.Post)
                 .Include(x => x.User);
             return comments;
         }

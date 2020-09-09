@@ -16,15 +16,15 @@ namespace Koinonia.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class PostsCommentController : ControllerBase
+    //[Authorize]
+    public class CommentController : ControllerBase
     {
         private readonly IPostsService postsService;
         private readonly ICommentsService commentsService;
         private readonly UserManager<AppUser> userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public PostsCommentController(IPostsService postsService,
+        public CommentController(IPostsService postsService,
             ICommentsService commentsService,
             UserManager<AppUser> userManager,
             IWebHostEnvironment webHostEnvironment)
@@ -62,7 +62,7 @@ namespace Koinonia.WebApi.Controllers
         {
             if(CommentId == null)
             {
-                return BadRequest("Cooment Id cannot be null");
+                return BadRequest("Comment Id cannot be null");
             }
             commentsService.Delete(CommentId);
             return NoContent();

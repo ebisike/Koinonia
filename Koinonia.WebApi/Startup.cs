@@ -50,7 +50,7 @@ namespace Koinonia.WebApi
             services.AddControllers();
 
             services.AddSwaggerGen(sw => {
-                sw.SwaggerDoc("v1", new OpenApiInfo { Title = "CommandSnippet API", Version = "v1" });
+                sw.SwaggerDoc("v1", new OpenApiInfo { Title = "Koinonia API", Version = "v1" });
             });
 
             RegisterServices(services);
@@ -62,7 +62,7 @@ namespace Koinonia.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -83,6 +83,12 @@ namespace Koinonia.WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //seed the required roles
+            //SeedRoles.SeedData(roleManager);
+
+            //seed the required users
+            //SeedUsers.SeedData(userManager);
 
             app.UseEndpoints(endpoints =>
             {

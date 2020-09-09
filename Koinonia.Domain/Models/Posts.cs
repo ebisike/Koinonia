@@ -16,6 +16,7 @@ namespace Koinonia.Domain.Models
         public DateTime DatePosted { get; set; }
         public string ImageFileName { get; set; }
         public Visibility Visibility { get; set; }
+        public Category PostCategory { get; set; }
 
         public Guid UserId { get; set; }
         public KoinoniaUsers User { get; set; }

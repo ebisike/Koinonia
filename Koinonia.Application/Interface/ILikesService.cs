@@ -11,7 +11,5 @@ namespace Koinonia.Application.Interface
     public interface ILikesService : IRepository<Likes>
     {
         Task<Likes> LikeAPost(LikesViewModel model);
-        Task<Likes> LikeANews(LikesViewModel model);
-        Task<Likes> LikeATestimony(LikesViewModel model);
     }
 }

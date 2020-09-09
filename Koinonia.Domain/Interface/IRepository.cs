@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Koinonia.Domain.Interface
         /// Return a list of all occurance in the db
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TObject> GetAll();
+        IQueryable<TObject> GetAll();
 
         /// <summary>
         /// Fimds a singe entity in the db
@@ -69,7 +70,5 @@ namespace Koinonia.Domain.Interface
         /// </summary>
         /// <returns></returns>
         Task<bool> SaveChangesAsync();
-
-        TObject GetKoinoniaUser(string userId);
     }
 }

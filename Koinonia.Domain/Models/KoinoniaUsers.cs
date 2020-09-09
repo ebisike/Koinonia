@@ -12,9 +12,7 @@ namespace Koinonia.Domain.Models
         {
             UserPosts = new HashSet<Posts>();
             UserLikes = new HashSet<Likes>();
-            UserNews = new HashSet<News>();
             UserComments = new HashSet<Comments>();
-            UserTestimonies = new HashSet<Testimonies>();
             UserFollowers = new HashSet<Followers>();
         }
         public Guid Id { get; set; }
@@ -24,12 +22,7 @@ namespace Koinonia.Domain.Models
         public StateOfOrigin stateOfOrigin { get; set; }
         public Gender Gender { get; set; }
 
-        //public string ApplicationUserId { get; set; }
-        //public AppUser ApplicationUser { get; set; }
-
         public ICollection<Posts> UserPosts { get; set; }
-        public ICollection<News> UserNews { get; set; }
-        public ICollection<Testimonies> UserTestimonies { get; set; }
         public ICollection<Comments> UserComments { get; set; }
         public ICollection<Likes> UserLikes { get; set; }
         public ICollection<Followers> UserFollowers { get; set; }
@@ -53,5 +46,14 @@ namespace Koinonia.Domain.Models
        Everyone = 1,
        [Display(Name = "Friends Only")]
        FollowersOnly
+    }
+
+    public enum Category
+    {
+        [Display(Name = "User Stories")]
+        UserStories = 1,
+        [Display(Name = "Church News")]
+        News,
+        Testimony
     }
 }

@@ -1,9 +1,9 @@
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\bin\Debug\netstandard2.1\Koinonia.Domain.deps.json
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\bin\Debug\netstandard2.1\Koinonia.Domain.dll
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\bin\Debug\netstandard2.1\Koinonia.Domain.pdb
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.csprojAssemblyReference.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.AssemblyInfoInputs.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.AssemblyInfo.cs
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.csproj.CoreCompileInputs.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.dll
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.pdb
-C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.Domain\obj\Debug\netstandard2.1\Koinonia.Domain.csprojAssemblyReference.cache

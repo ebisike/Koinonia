@@ -8,7 +8,7 @@ namespace Koinonia.Domain.Models
     {
         public Guid Id { get; set; }
         public Guid FollowersId { get; set; }
-        public Guid FollowingId { get; set; }
+        public Guid UserId { get; set; }
         public KoinoniaUsers Users { get; set; }
     }
 }

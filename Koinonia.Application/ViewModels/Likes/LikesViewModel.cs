@@ -12,9 +12,7 @@ namespace Koinonia.Application.ViewModels.Likes
         public Guid LikedBy { get; set; }
         public Guid UserId { get; set; }
         public DateTime DateLiked { get; set; }
-        public Koinonia.Domain.Models.Posts Posts { get; set; }
-        public News News { get; set; }
-        public Testimonies Testimonies { get; set; }
+        public Koinonia.Domain.Models.Posts Posts { get; set; }       
         public KoinoniaUsers User { get; set; }
     }
 }

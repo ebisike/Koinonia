@@ -28,16 +28,10 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<DateTime>("DateCommented")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("NewsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TestimoniesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TestimonyId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Usercomment")
@@ -46,16 +40,9 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<Guid?>("UsersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("NewsId");
-
                     b.HasIndex("PostId");
-
-                    b.HasIndex("TestimoniesId");
 
                     b.HasIndex("UsersId");
 
@@ -71,7 +58,7 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<Guid>("FollowersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FollowingId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UsersId")
@@ -119,13 +106,10 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<DateTime>("DateLiked")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("NewsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TestimonyId")
+                    b.Property<Guid?>("PostsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -134,48 +118,13 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<Guid?>("UsersId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("postsId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("NewsId");
-
-                    b.HasIndex("TestimonyId");
+                    b.HasIndex("PostsId");
 
                     b.HasIndex("UsersId");
 
-                    b.HasIndex("postsId");
-
                     b.ToTable("Like");
-                });
-
-            modelBuilder.Entity("Koinonia.Domain.Models.News", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("visibility")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("Koinonia.Domain.Models.Posts", b =>
@@ -193,6 +142,9 @@ namespace Koinonia.Infra.Data.Migrations
                     b.Property<string>("ImageFileName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PostCategory")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -206,51 +158,13 @@ namespace Koinonia.Infra.Data.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("Koinonia.Domain.Models.Testimonies", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("visibility")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Testimony");
-                });
-
             modelBuilder.Entity("Koinonia.Domain.Models.Comments", b =>
                 {
-                    b.HasOne("Koinonia.Domain.Models.News", "News")
-                        .WithMany("NewsComments")
-                        .HasForeignKey("NewsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Koinonia.Domain.Models.Posts", "post")
+                    b.HasOne("Koinonia.Domain.Models.Posts", "Post")
                         .WithMany("PostComments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Koinonia.Domain.Models.Testimonies", "Testimonies")
-                        .WithMany("TestimonyComments")
-                        .HasForeignKey("TestimoniesId");
 
                     b.HasOne("Koinonia.Domain.Models.KoinoniaUsers", "Users")
                         .WithMany("UserComments")
@@ -266,49 +180,19 @@ namespace Koinonia.Infra.Data.Migrations
 
             modelBuilder.Entity("Koinonia.Domain.Models.Likes", b =>
                 {
-                    b.HasOne("Koinonia.Domain.Models.News", "News")
-                        .WithMany("NewsLikes")
-                        .HasForeignKey("NewsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Koinonia.Domain.Models.Testimonies", "Testimony")
-                        .WithMany("TestimonyLikes")
-                        .HasForeignKey("TestimonyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Koinonia.Domain.Models.Posts", "Posts")
+                        .WithMany("PostLikes")
+                        .HasForeignKey("PostsId");
 
                     b.HasOne("Koinonia.Domain.Models.KoinoniaUsers", "Users")
                         .WithMany("UserLikes")
                         .HasForeignKey("UsersId");
-
-                    b.HasOne("Koinonia.Domain.Models.Posts", "posts")
-                        .WithMany("PostLikes")
-                        .HasForeignKey("postsId");
-                });
-
-            modelBuilder.Entity("Koinonia.Domain.Models.News", b =>
-                {
-                    b.HasOne("Koinonia.Domain.Models.KoinoniaUsers", "User")
-                        .WithMany("UserNews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Koinonia.Domain.Models.Posts", b =>
                 {
                     b.HasOne("Koinonia.Domain.Models.KoinoniaUsers", "User")
                         .WithMany("UserPosts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Koinonia.Domain.Models.Testimonies", b =>
-                {
-                    b.HasOne("Koinonia.Domain.Models.KoinoniaUsers", "User")
-                        .WithMany("UserTestimonies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

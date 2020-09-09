@@ -42,7 +42,7 @@ namespace Koinonia.Infra.Data.Repositories
             return _context.Set<T>().Find(Id);
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
             return _context.Set<T>();
         }        
@@ -50,11 +50,6 @@ namespace Koinonia.Infra.Data.Repositories
         public async Task<T> GetAsync(Guid Id)
         {
             return await _context.Set<T>().FindAsync(Id);
-        }
-
-        public T GetKoinoniaUser(string userId)
-        {
-            return _context.Set<T>().Find(userId);
         }
 
         public bool SaveChanges()

@@ -13,8 +13,13 @@ namespace Koinonia.Infra.Ioc
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IPostsService, PostsService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IPostsService, PostsService>();
+            services.AddScoped<ICommentsService, CommentsService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILikesService, LikesService>();
+            services.AddScoped<IFollowService, FollowService>();
+            services.AddScoped<IEmailSender, EmailSender>();
         }
     }
 }

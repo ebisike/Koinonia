@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Koinonia.Infra.Data.Migrations
 {
-    public partial class InitailMigration : Migration
+    public partial class Entities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,28 +44,6 @@ namespace Koinonia.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "News",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Content = table.Column<string>(nullable: true),
-                    ImageFileName = table.Column<string>(nullable: true),
-                    DatePosted = table.Column<DateTime>(nullable: false),
-                    visibility = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_News", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_News_KoinoniaUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "KoinoniaUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Post",
                 columns: table => new
                 {
@@ -74,6 +52,7 @@ namespace Koinonia.Infra.Data.Migrations
                     DatePosted = table.Column<DateTime>(nullable: false),
                     ImageFileName = table.Column<string>(nullable: true),
                     Visibility = table.Column<int>(nullable: false),
+                    PostCategory = table.Column<int>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -88,62 +67,25 @@ namespace Koinonia.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Testimony",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Content = table.Column<string>(nullable: true),
-                    ImageFileName = table.Column<string>(nullable: true),
-                    DatePosted = table.Column<DateTime>(nullable: false),
-                    visibility = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Testimony", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Testimony_KoinoniaUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "KoinoniaUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Usercomment = table.Column<string>(nullable: true),
-                    PostId = table.Column<Guid>(nullable: false),
-                    NewsId = table.Column<Guid>(nullable: false),
-                    TestimonyId = table.Column<Guid>(nullable: false),
-                    userId = table.Column<Guid>(nullable: false),
                     DateCommented = table.Column<DateTime>(nullable: false),
-                    TestimoniesId = table.Column<Guid>(nullable: true),
+                    PostId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     UsersId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comment_News_NewsId",
-                        column: x => x.NewsId,
-                        principalTable: "News",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Comment_Post_PostId",
                         column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comment_Testimony_TestimoniesId",
-                        column: x => x.TestimoniesId,
-                        principalTable: "Testimony",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comment_KoinoniaUsers_UsersId",
                         column: x => x.UsersId,
@@ -157,57 +99,33 @@ namespace Koinonia.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    DateLiked = table.Column<DateTime>(nullable: false),
                     PostId = table.Column<Guid>(nullable: false),
-                    NewsId = table.Column<Guid>(nullable: false),
-                    TestimonyId = table.Column<Guid>(nullable: false),
+                    PostsId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false),
-                    postsId = table.Column<Guid>(nullable: true),
-                    UsersId = table.Column<Guid>(nullable: true),
-                    DateLiked = table.Column<DateTime>(nullable: false)
+                    UsersId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Like", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Like_News_NewsId",
-                        column: x => x.NewsId,
-                        principalTable: "News",
+                        name: "FK_Like_Post_PostsId",
+                        column: x => x.PostsId,
+                        principalTable: "Post",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Like_Testimony_TestimonyId",
-                        column: x => x.TestimonyId,
-                        principalTable: "Testimony",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Like_KoinoniaUsers_UsersId",
                         column: x => x.UsersId,
                         principalTable: "KoinoniaUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Like_Post_postsId",
-                        column: x => x.postsId,
-                        principalTable: "Post",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comment_NewsId",
-                table: "Comment",
-                column: "NewsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_PostId",
                 table: "Comment",
                 column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comment_TestimoniesId",
-                table: "Comment",
-                column: "TestimoniesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_UsersId",
@@ -220,14 +138,9 @@ namespace Koinonia.Infra.Data.Migrations
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Like_NewsId",
+                name: "IX_Like_PostsId",
                 table: "Like",
-                column: "NewsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Like_TestimonyId",
-                table: "Like",
-                column: "TestimonyId");
+                column: "PostsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Like_UsersId",
@@ -235,23 +148,8 @@ namespace Koinonia.Infra.Data.Migrations
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Like_postsId",
-                table: "Like",
-                column: "postsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_News_UserId",
-                table: "News",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Post_UserId",
                 table: "Post",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Testimony_UserId",
-                table: "Testimony",
                 column: "UserId");
         }
 
@@ -265,12 +163,6 @@ namespace Koinonia.Infra.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Like");
-
-            migrationBuilder.DropTable(
-                name: "News");
-
-            migrationBuilder.DropTable(
-                name: "Testimony");
 
             migrationBuilder.DropTable(
                 name: "Post");

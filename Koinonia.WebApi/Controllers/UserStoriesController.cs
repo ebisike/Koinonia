@@ -8,6 +8,7 @@ using Koinonia.Application.Services;
 using Koinonia.Application.ViewModels.Posts;
 using Koinonia.Domain.Models;
 using Koinonia.Infra.Data.Context;
+using Koinonia.WebApi.Migrations;
 using Koinonia.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -20,17 +21,15 @@ namespace Koinonia.WebApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class PostsController : ControllerBase
+    public class UserStoriesController : ControllerBase
     {
         private readonly IPostsService postService;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly UserManager<AppUser> userManager;
         private readonly KoinoniaDbContext context;
-
-        public AppUser LogedInUser { get; set; }
         public string Folder { get; set; }
 
-        public PostsController(IPostsService postService,
+        public UserStoriesController(IPostsService postService,
             IWebHostEnvironment webHostEnvironment,
             UserManager<AppUser> userManager,
             KoinoniaDbContext context)
@@ -41,25 +40,27 @@ namespace Koinonia.WebApi.Controllers
             this.context = context;
             
             //build the folder
-            this.Folder = Path.Combine(webHostEnvironment.WebRootPath, "Posts");
+            this.Folder = Path.Combine(webHostEnvironment.WebRootPath, "Posts/UserStories");
         }
 
         private async Task<AppUser> GetUser()
         {
             return await userManager.GetUserAsync(User);
         }
+        
         /// <summary>
-        /// This endpoint is the homepage of the application.
-        /// The user can view all the posts in the application
+        /// Returns an Iquerable result of user posts under the UserStories category
         /// </summary>
         /// <returns></returns>
-        //GET: api/Posts
+        /// 
+
+        //GET: api/UserStories
         [AllowAnonymous]        
         [HttpGet]
         public IActionResult Index()
         {
-            var allPosts = postService.GetAllPosts();
-            return Ok(allPosts);
+            var stories = postService.GetAllUserStories();
+            return Ok(stories);
         }
 
         //POST: api/Posts
@@ -82,11 +83,14 @@ namespace Koinonia.WebApi.Controllers
                     {
                         return BadRequest("file format not supported");
                     }
-                    
                 }
-                LogedInUser = await GetUser();
-                model.DatePosted = DateTime.Now;
-                var addedPost = await postService.AddNewUserPost(model, fileName, Guid.Parse(LogedInUser.Id));
+                
+                model.DatePosted = DateTime.Now; //set the timestamp
+                model.userId = Guid.Parse(GetUser().Result.Id); //set the user id
+                model.PostCategory = Category.UserStories; //set the post category as UserStories
+
+                var addedPost = await postService.AddNewUserPost(model, fileName);
+
                 return CreatedAtRoute(nameof(GetPost), new { addedPost.Id }, addedPost);
             }
             return BadRequest();
@@ -109,7 +113,7 @@ namespace Koinonia.WebApi.Controllers
         }
 
         //GET api/Posts/{id}
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public IActionResult DeletePost(Guid Id)
         {
             if(Id == null)
@@ -117,7 +121,43 @@ namespace Koinonia.WebApi.Controllers
                 return BadRequest("Post ID cannot be null");
             }
             postService.DeletePost(Id);
-            return Ok();
+            return Ok(new { message = "Post Deleted"});
+        }
+
+        //GET: api/Posts
+        [HttpGet]
+        [Route("UpdateUserStory")]
+        public IActionResult UpdateUserStory(Guid PostId)
+        {
+            var post = postService.Get(PostId);
+            PostsViewModel postsView = new PostsViewModel()
+            {
+                PostId = post.Id,
+                Content = post.Content,
+                userId = post.UserId,
+                PostCategory = post.PostCategory,
+                DatePosted = post.DatePosted,
+                VisibilityStatus = post.Visibility,
+                ExistingPhotoPath = post.ImageFileName
+            };
+            return Ok(postsView);
+        }
+        //POST: api/Posts
+        [HttpPut]
+        [Route("UpdateUserStory")]
+        public async Task<IActionResult> UpdateUserStory(PostsViewModel model)
+        {
+            if(model != null)
+            {
+                if(model.Image != null)
+                {
+                    model.ExistingPhotoPath = UploadFile.Upload(model.Image, Folder);
+                }
+                await postService.UpdatePost(model);
+                return Ok();
+            }
+
+            return BadRequest(new { message = "Model cannot be null" });
         }
     }
 }
