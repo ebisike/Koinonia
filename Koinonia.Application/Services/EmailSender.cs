@@ -13,11 +13,11 @@ namespace Koinonia.Application.Services
             MyMail emailService = null;
             if(mailMessage.Attachments != null)
             {
-                emailService = new MyMail(mailMessage.SenderAddress, mailMessage.RecieverAddress, mailMessage.Subject, mailMessage.Body, mailMessage.Attachments);
+                emailService = new MyMail(mailMessage.SenderAddress, mailMessage.Password, mailMessage.RecieverAddress, mailMessage.Subject, mailMessage.Body, mailMessage.Attachments);
             }
             else
             {
-                 emailService = new MyMail(mailMessage.SenderAddress, mailMessage.RecieverAddress, mailMessage.Subject, mailMessage.Body);
+                 emailService = new MyMail(mailMessage.SenderAddress, mailMessage.Password, mailMessage.RecieverAddress, mailMessage.Subject, mailMessage.Body);
             }
 
             if (emailService.Send())

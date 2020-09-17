@@ -1,4 +1,5 @@
 ﻿using Koinonia.Application.ViewModels;
+using Koinonia.Application.ViewModels.Account;
 using Koinonia.Application.ViewModels.Profile;
 using Koinonia.Domain.Interface;
 using Koinonia.Domain.Models;
@@ -12,6 +13,7 @@ namespace Koinonia.Application.Interface
 {
     public interface IUserService : IRepository<KoinoniaUsers>
     {
+        //LoginAuthenticationResponse Authenticate(KoinoniaUserModel model);
         Task<KoinoniaUsers> AddNewUser(KoinoniaUserModel model);
         KoinoniaUsers GetUser(Guid UserId);
         ProfileViewModel GetUserProfile(Guid UserId);

@@ -38,11 +38,19 @@ namespace Koinonia.Application.Services
 
         public async Task<bool> UnFollowUser(Guid FollowerId, Guid UserId)
         {
-            var entity = followership.GetAll().Where(x => x.FollowersId == FollowerId && x.UserId == UserId).FirstOrDefault();
-            if(entity != null)
+            /************************************************************************************************
+                To unfollow a user, we search for the role that matches the query string
+                where the userId is equal to the user you want to unfollow
+                and the followerId is equal to the user that wishes to unfollow a particular user
+             *************************************************************************************************/
+            Followers TableRowInstance = followership.GetAll()
+                .Where(x => x.FollowersId == FollowerId && x.UserId == UserId)
+                .FirstOrDefault();
+
+            if (TableRowInstance != null)
             {
-                followership.Delete(entity.Id);
-                if(await followership.SaveChangesAsync())
+                followership.Delete(TableRowInstance.Id);
+                if (await followership.SaveChangesAsync())
                 {
                     return true;
                 }

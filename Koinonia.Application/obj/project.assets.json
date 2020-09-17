@@ -7134,11 +7134,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj",
+      "projectUniqueName": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj",
       "projectName": "Koinonia.Application",
-      "projectPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj",
+      "projectPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Application\\Koinonia.Application.csproj",
       "packagesPath": "C:\\Users\\Shopinverse.com\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Application\\obj\\",
+      "outputPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -7159,11 +7159,11 @@
       "frameworks": {
         "netstandard2.1": {
           "projectReferences": {
-            "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Domain\\Koinonia.Domain.csproj": {
-              "projectPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Domain\\Koinonia.Domain.csproj"
+            "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Domain\\Koinonia.Domain.csproj": {
+              "projectPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Domain\\Koinonia.Domain.csproj"
             },
-            "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Infra.Data\\Koinonia.Infra.Data.csproj": {
-              "projectPath": "C:\\Users\\Shopinverse.com\\Documents\\Koinonia\\Koinonia.Infra.Data\\Koinonia.Infra.Data.csproj"
+            "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Infra.Data\\Koinonia.Infra.Data.csproj": {
+              "projectPath": "C:\\Users\\Shopinverse.com\\source\\repos\\Koinonia\\Koinonia.Infra.Data\\Koinonia.Infra.Data.csproj"
             }
           }
         }

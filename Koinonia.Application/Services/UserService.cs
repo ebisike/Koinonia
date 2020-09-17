@@ -1,5 +1,7 @@
-﻿using Koinonia.Application.Interface;
+﻿using Koinonia.Application.HelperClass;
+using Koinonia.Application.Interface;
 using Koinonia.Application.ViewModels;
+using Koinonia.Application.ViewModels.Account;
 using Koinonia.Application.ViewModels.Profile;
 using Koinonia.Domain.Interface;
 using Koinonia.Domain.Models;
@@ -7,6 +9,7 @@ using Koinonia.Infra.Data.Context;
 using Koinonia.Infra.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +21,12 @@ namespace Koinonia.Application.Services
     public class UserService : Repository<KoinoniaUsers>, IUserService
     {
         private readonly IRepository<KoinoniaUsers> usersRepo;
-        //private readonly UserManager<IdentityUser> userManager;
+        private readonly AppSettings _appSettings;
 
-        public UserService(KoinoniaDbContext context, IRepository<KoinoniaUsers> usersRepo) : base(context) // UserManager<IdentityUser> userManager
+        public UserService(KoinoniaDbContext context, IRepository<KoinoniaUsers> usersRepo, IOptions<AppSettings> appSettings) : base(context)
         {
             this.usersRepo = usersRepo;
-            //this.userManager = userManager;
+            _appSettings = appSettings.Value;
         }
 
         public async Task<KoinoniaUsers> AddNewUser(KoinoniaUserModel model)
@@ -43,6 +46,22 @@ namespace Koinonia.Application.Services
             return NewUser;
         }
 
+        //public LoginAuthenticationResponse Authenticate(Guid UserId)
+        //{
+        //    var User = usersRepo.Get(UserId);
+
+        //    //return null is user was not found
+        //    if (User == null) return null;
+
+        //    //authentication succesful, so generate token
+        //    var token = GenerateJwtToken(User);
+        //}
+
+        //private string GenerateJwtToken(KoinoniaUsers user)
+        //{
+        //    // generate token that is valid for 7days
+        //    var tokenHandler = new JwtSecurityTokenHandler
+        //}
         public bool DeleteUser(Guid UserId)
         {
             usersRepo.Delete(UserId);
@@ -64,15 +83,16 @@ namespace Koinonia.Application.Services
         {
             ProfileViewModel profileView = new ProfileViewModel();
 
-            ////get Koinonia information [email, phonenumber, username]
-            //var appUser = userManager.FindByIdAsync(UserId.ToString()).Result;
-
             //get koinonia user
             var koinoniaUser = usersRepo.Get(UserId);
 
             //get user followers
             var followers = _context.Followers
                 .Where(x => x.UserId == UserId);
+
+            //get user following
+            var following = _context.Followers
+                .Where(x => x.FollowersId == UserId);
 
             //get all user stories with reactions
             var UserStories = _context.Post
@@ -98,6 +118,7 @@ namespace Koinonia.Application.Services
             profileView.Testimonies = testimonies;
             profileView.UserStories = UserStories;
             profileView.Followers = followers;
+            profileView.Following = following;
             profileView.UserInfomation = koinoniaUser;           
 
             return profileView;
@@ -106,17 +127,18 @@ namespace Koinonia.Application.Services
         public async Task<KoinoniaUsers> UpdateProfile(EditprofileViewModel model)
         {
             //get the old profile
-            var userprofile = usersRepo.Get(model.Id);
+            var UserProfileToUpdate = usersRepo.Get(model.Id);
 
-            userprofile.FirstName = model.FirstName;
-            userprofile.LastName = model.LastName;
-            userprofile.stateOfOrigin = model.StateOfOrigin;
-            userprofile.Gender = model.Gender;
-            userprofile.PhoneNumber = model.PhoneNumber;
+            //before updating, check if new update is null or whitespace
+            UserProfileToUpdate.FirstName = string.IsNullOrWhiteSpace(model.FirstName) ? UserProfileToUpdate.FirstName : model.FirstName;
+            UserProfileToUpdate.LastName = string.IsNullOrWhiteSpace(model.LastName) ? UserProfileToUpdate.LastName : model.LastName;
+            UserProfileToUpdate.stateOfOrigin = model.StateOfOrigin == default ? UserProfileToUpdate.stateOfOrigin : model.StateOfOrigin;
+            UserProfileToUpdate.Gender = model.Gender == default ? UserProfileToUpdate.Gender : model.Gender;
+            UserProfileToUpdate.PhoneNumber = string.IsNullOrWhiteSpace(model.PhoneNumber) ? UserProfileToUpdate.PhoneNumber : model.PhoneNumber;
 
-            usersRepo.Update(userprofile);
+            usersRepo.Update(UserProfileToUpdate);
             await usersRepo.SaveChangesAsync();
-            return userprofile;
+            return UserProfileToUpdate;
         }
     }
 }

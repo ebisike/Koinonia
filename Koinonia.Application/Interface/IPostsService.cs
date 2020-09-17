@@ -12,9 +12,9 @@ namespace Koinonia.Application.Interface
 {
     public interface IPostsService : IRepository<Posts>
     {
-        Task<Posts> AddNewUserPost(PostsViewModel model, string fileName);
+        Task<Posts> AddNewUserPost(PostsViewModel model, List<string> fileName);
         Task<Posts> GetPost(Guid PostId);
-        Task<Posts> UpdatePost(PostsViewModel model);
+        Task<Posts> UpdatePost(PostsViewModel model, List<string> fileName);
         IQueryable<Posts> GetAllUserStories();
         IQueryable<Posts> GetAllChurchNews();
         IQueryable<Posts> GetAllTestimonies();

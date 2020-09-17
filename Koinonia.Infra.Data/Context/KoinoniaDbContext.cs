@@ -14,6 +14,7 @@ namespace Koinonia.Infra.Data.Context
 
         }
         public DbSet<Posts> Post { get; set; }
+        public DbSet<MediaFiles> MediaFiles { get; set; }
         public DbSet<Comments> Comment { get; set; }
         public DbSet<Likes> Like { get; set; }
         public DbSet<Followers> Followers { get; set; }

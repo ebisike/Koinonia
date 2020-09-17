@@ -12,6 +12,7 @@ namespace Koinonia.Application.ViewModels.Profile
         public IQueryable<Koinonia.Domain.Models.Posts> ChurchNews { get; set; }
         public IQueryable<Koinonia.Domain.Models.Posts> Testimonies { get; set; }
         public IQueryable<Followers> Followers { get; set; }
+        public IQueryable<Followers> Following { get; set; }
         public KoinoniaUsers UserInfomation { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }

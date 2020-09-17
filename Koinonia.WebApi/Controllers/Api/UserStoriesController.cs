@@ -60,6 +60,13 @@ namespace Koinonia.WebApi.Controllers
         public IActionResult Index()
         {
             var stories = postService.GetAllUserStories();
+            //var stories = postService.GetAllUserStories().SelectMany(d => d.PostComments, (User, Comment) => new
+            //{
+            //    userName = User.User.FirstName + " " + User.User.LastName,
+            //    Comment = Comment.Usercomment,
+            //    dateCommented = Comment.DateCommented.ToLongDateString(),
+            //    PostId = Comment.PostId
+            //});
             return Ok(stories);
         }
 
@@ -67,21 +74,24 @@ namespace Koinonia.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<PostsViewModel>> NewPost(PostsViewModel model)
         {
-            string fileName = null;
+            List<string> fileName = null;
             if (model != null)
             {
                 //handle the upload if the user added an image to the post
-                if(model.Image != null)
+                if(model.Image != null && model.Image.Count() > 0)
                 {
-                    //verify file extension
-                    var ext = Path.GetExtension(model.Image.FileName).ToLower();
-                    if(ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".mp4")
+                    foreach (var media in model.Image)
                     {
-                        fileName = UploadFile.Upload(model.Image, Folder);
-                    }
-                    else
-                    {
-                        return BadRequest("file format not supported");
+                        //verify file extension
+                        var ext = Path.GetExtension(media.FileName).ToLower();
+                        if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".mp4" || ext == ".3gp")
+                        {
+                            fileName.Add(UploadFile.Upload(media, Folder));
+                        }
+                        else
+                        {
+                            return BadRequest("file format not supported");
+                        }
                     }
                 }
                 
@@ -120,6 +130,13 @@ namespace Koinonia.WebApi.Controllers
             {
                 return BadRequest("Post ID cannot be null");
             }
+            var post = postService.Get(Id);
+            foreach (var item in post.MediaFiles)
+            {
+                string path = Path.Combine(Folder, item.fileName);
+                //delete the post file if any
+                UploadFile.DeleteFile(path);
+            }
             postService.DeletePost(Id);
             return Ok(new { message = "Post Deleted"});
         }
@@ -138,7 +155,6 @@ namespace Koinonia.WebApi.Controllers
                 PostCategory = post.PostCategory,
                 DatePosted = post.DatePosted,
                 VisibilityStatus = post.Visibility,
-                ExistingPhotoPath = post.ImageFileName
             };
             return Ok(postsView);
         }
@@ -149,11 +165,14 @@ namespace Koinonia.WebApi.Controllers
         {
             if(model != null)
             {
-                if(model.Image != null)
+                if(model.Image != null && model.Image.Count() > 0 )
                 {
-                    model.ExistingPhotoPath = UploadFile.Upload(model.Image, Folder);
+                    foreach (var item in model.Image)
+                    {
+                        model.ExistingPhotoPath.Add(UploadFile.Upload(item, Folder));
+                    }
                 }
-                await postService.UpdatePost(model);
+                await postService.UpdatePost(model, model.ExistingPhotoPath);
                 return Ok();
             }
 

@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Koinonia.Application.HelperClass;
 using Koinonia.Domain.Models;
 using Koinonia.Infra.Data.Context;
 using Koinonia.Infra.Ioc;
 using Koinonia.WebApi.Data;
+using Koinonia.WebApi.Helpers;
 using Koinonia.WebApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,12 +21,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Koinonia.WebApi
 {
     public class Startup
     {
+        private const string SECRET_KEY = "TQvgjeABMPOwCyOqah5EQU5yyVjpmVGTQvgjeABMPOwCycOqah5EQu%yyVjpmVGTQv";
+        public static readonly SymmetricSecurityKey SIGNING_KEY = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -53,6 +60,32 @@ namespace Koinonia.WebApi
                 sw.SwaggerDoc("v1", new OpenApiInfo { Title = "Koinonia API", Version = "v1" });
             });
 
+            //services.Configure<DataProtectionTokenProviderOptions>(d => d.TokenLifespan = TimeSpan.FromMinutes(10));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            //var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //    .AddJwtBearer(jwtoptions =>
+            //    {
+            //        jwtoptions.RequireHttpsMetadata = false;
+            //        jwtoptions.SaveToken = false;
+
+            //        jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+            //        {
+            //            ValidateIssuerSigningKey = true,
+            //            IssuerSigningKey = new SymmetricSecurityKey(key),
+            //            ValidateIssuer = false,
+            //            ValidateAudience = false,
+            //            ClockSkew = TimeSpan.Zero
+            //        };
+            //    });
+
             RegisterServices(services);
         }
 
@@ -81,6 +114,14 @@ namespace Koinonia.WebApi
             app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
+            //custom jwt middleware
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthorization();
 

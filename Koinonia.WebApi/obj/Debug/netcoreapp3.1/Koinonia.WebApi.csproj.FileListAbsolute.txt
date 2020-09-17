@@ -69,9 +69,6 @@ C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\bin\Debug\netcore
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.csprojAssemblyReference.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.AssemblyInfoInputs.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.AssemblyInfo.cs
-C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.csproj.CoreCompileInputs.cache
-C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.RazorTargetAssemblyInfo.cache
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.csproj.CopyComplete
 C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\staticwebassets\Koinonia.WebApi.StaticWebAssets.Manifest.cache
@@ -160,3 +157,7 @@ C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp
 C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.dll
 C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.pdb
 C:\Users\Shopinverse.com\Documents\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.genruntimeconfig.cache
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.csproj.CoreCompileInputs.cache
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Shopinverse.com\source\repos\Koinonia\Koinonia.WebApi\obj\Debug\netcoreapp3.1\Koinonia.WebApi.MvcApplicationPartsAssemblyInfo.cache

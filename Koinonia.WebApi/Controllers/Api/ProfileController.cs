@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Koinonia.WebApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Authorize]
     public class ProfileController : ControllerBase
     {

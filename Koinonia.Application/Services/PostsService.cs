@@ -7,6 +7,7 @@ using Koinonia.Infra.Data.Context;
 using Koinonia.Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,24 +23,35 @@ namespace Koinonia.Application.Services
         {
             postRepo = PostRepo;
         }
-        public async Task<Posts> AddNewUserPost(PostsViewModel model, string fileName)
+        public async Task<Posts> AddNewUserPost(PostsViewModel model, List<string> fileName)
         {
-           //create a new instance of the entity post
+            //create a new instance of the entity post
 
             Posts userPost = new Posts()
             {
+                Id = Guid.NewGuid(),
                 Visibility = model.VisibilityStatus,
                 DatePosted = model.DatePosted,
-                Content = model.Content,
-                ImageFileName = fileName,
+                Content = model.Content,                
                 PostCategory = model.PostCategory,
                 UserId = model.userId
             };
-            var added = await postRepo.AddNewAsync(userPost);
-            if(added != null)
+            var postAdded = await postRepo.AddNewAsync(userPost);
+
+            //add each media file to db
+            foreach (var item in fileName)
             {
-                await postRepo.SaveChangesAsync();
-                return added;
+                MediaFiles media = new MediaFiles()
+                {
+                    PostId = postAdded.Id,
+                    fileName = item
+                };
+                _context.MediaFiles.Add(media);
+            }
+            if(postAdded != null)
+            {
+                await _context.SaveChangesAsync();
+                return postAdded;
             }
             return null;
         }
@@ -56,7 +68,8 @@ namespace Koinonia.Application.Services
                 .Where(x => x.PostCategory == Category.News)
                 .Include(x => x.User)
                 .Include(x => x.PostLikes)
-                .Include(x => x.PostComments);
+                .Include(x => x.PostComments)
+                .OrderByDescending(t => t.DatePosted.ToShortTimeString());
 
             return ChurchNews;
         }
@@ -67,7 +80,8 @@ namespace Koinonia.Application.Services
                 .Where(x => x.PostCategory == Category.Testimony)
                 .Include(x => x.User)
                 .Include(x => x.PostLikes)
-                .Include(x => x.PostComments);
+                .Include(x => x.PostComments)
+                .OrderByDescending(t => t.DatePosted.ToShortTimeString());
 
             return Testimonies;
         }
@@ -78,7 +92,21 @@ namespace Koinonia.Application.Services
                 .Where(x => x.PostCategory == Category.UserStories)
                 .Include(u => u.User)
                 .Include(l => l.PostLikes)
-                .Include(c => c.PostComments);                   
+                .Include(c => c.PostComments);
+            //.OrderByDescending(x => x.DatePosted.ToShortTimeString());
+
+            //var reult = _context.Post
+            //    .Where(category => category.PostCategory == Category.UserStories)
+            //    .Include(u => u.User)
+            //    .Include(likes => likes.PostLikes)
+            //    .Include(comments => comments.PostComments)
+            //    .SelectMany(comment=>comment.PostComments, (user, comment) => new
+            //    { 
+            //        user = user.User,
+            //        comment = comment.Usercomment,
+            //        date = comment.DateCommented,
+            //        post = comment.Post
+            //    });
 
             return UserStories;
         }
@@ -100,21 +128,30 @@ namespace Koinonia.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Posts> UpdatePost(PostsViewModel model)
+        public async Task<Posts> UpdatePost(PostsViewModel model, List<string> fileName)
         {
             //fetch the old post
             var post = postRepo.Get(model.PostId);
 
             //update post properties
-            post.Content = model.Content;
-            post.DatePosted = DateTime.Now;
-            post.ImageFileName = model.ExistingPhotoPath;
+            post.Content = string.IsNullOrWhiteSpace(model.Content) ? post.Content : model.Content;
             post.PostCategory = model.PostCategory;
             post.Visibility = model.VisibilityStatus;
+            post.DatePosted = post.DatePosted;
             post.UserId = model.userId;
 
             postRepo.Update(post);
-            await postRepo.SaveChangesAsync();
+
+            foreach (var item in fileName)
+            {
+                MediaFiles media = new MediaFiles()
+                {
+                    PostId = post.Id,
+                    fileName = item,
+                };
+                _context.MediaFiles.Update(media);
+            }
+            await _context.SaveChangesAsync();
             return post;
         }
     }

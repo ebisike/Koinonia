@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Koinonia.Application.HelperClass;
 using Koinonia.Application.Interface;
 using Koinonia.Application.ViewModels;
 using Koinonia.Application.ViewModels.Account;
@@ -13,6 +16,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
+//using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Koinonia.WebApi.Controllers
 {
@@ -24,6 +30,7 @@ namespace Koinonia.WebApi.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly AppSettings _appSettings;
         private readonly IUserService userService;
         private readonly IEmailSender emailSender;
         private readonly IFollowService followService;
@@ -31,6 +38,7 @@ namespace Koinonia.WebApi.Controllers
         public AccountController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             RoleManager<IdentityRole> roleManager,
+            IOptions<AppSettings> appSettings,
             IUserService userService,
             IEmailSender emailSender,
             IFollowService followService)
@@ -38,6 +46,7 @@ namespace Koinonia.WebApi.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            _appSettings = appSettings.Value;
             this.userService = userService;
             this.emailSender = emailSender;
             this.followService = followService;
@@ -117,7 +126,7 @@ namespace Koinonia.WebApi.Controllers
 
         //POST: api/Account
         [HttpPost]
-        [Route("SIgnin")]
+        [Route("Signin")]
         public async Task<IActionResult> Signin(LoginViewModel model)
         {
             //validate that the provided username is registered on the app
@@ -127,14 +136,47 @@ namespace Koinonia.WebApi.Controllers
                 var result = await userManager.CheckPasswordAsync(user, model.Password);
                 if (result)
                 {
+                    var response = Authenticate(Guid.Parse(user.Id), user.Email, user.UserName);
+                    if(response == null)
+                        return BadRequest(new { message = "Username or password is incorrect" });
+                    
+
                     //get the user role
                     string userRole = await GetUserRole(user);
-                    return Ok(new { CurrentId = user.Id, UserRole = userRole, logginUser = user });
+                    return Ok(new { User = response, role = userRole});
                 }
             }
             return BadRequest(new { message = "Sorry the username provide is not registered on this platform" });
         }
 
+        private LoginAuthenticationResponse Authenticate(Guid userId, string email, string username)
+        {
+            KoinoniaUsers user = userService.GetUser(userId);
+
+            //return null if user is not found
+            if (user == null) return null;
+
+            //user found successfully, now generate jwt token
+            var token = GenerateJwtToken(user);
+
+            return new LoginAuthenticationResponse(user, token, email, username);
+        }
+
+        private string GenerateJwtToken(KoinoniaUsers user)
+        {
+            // generate token that will last for 7days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("Id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
         private async Task<string> GetUserRole(AppUser User)
         {
             foreach (var role in roleManager.Roles)

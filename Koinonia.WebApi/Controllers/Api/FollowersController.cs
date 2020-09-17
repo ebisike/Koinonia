@@ -21,14 +21,20 @@ namespace Koinonia.WebApi.Controllers
             this.followService = followService;
         }
 
+        /// <summary>
+        /// This endpoint is used to follow a koinonia User
+        /// </summary>
+        /// <param name="FollowerId"></param>
+        /// <param name="UserId"></param>
+        /// <returns>Status 200</returns>
         //POST: api/Follow
         [HttpPost]
         [Route("Follow")]
-        public async Task<IActionResult> Follow(Guid FollowerId, Guid FollowingId)
+        public async Task<IActionResult> Follow(Guid FollowerId, Guid UserId)
         {
-            if(FollowerId != null && FollowingId != null)
+            if(FollowerId != null && UserId != null)
             {
-                var result = await followService.FollowUser(FollowerId, FollowingId);
+                var result = await followService.FollowUser(FollowerId, UserId);
                 if(result != null)
                 {
                     return Ok(new { message = "You're now following the user" });
