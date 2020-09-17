@@ -20,6 +20,7 @@ namespace Koinonia.Infra.Ioc
             services.AddScoped<ILikesService, LikesService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IEmailSender, EmailSender>();
+            //services.AddScoped<IAuthentication, Authentication>();
         }
     }
 }

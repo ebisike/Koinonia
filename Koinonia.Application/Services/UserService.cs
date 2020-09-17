@@ -21,12 +21,10 @@ namespace Koinonia.Application.Services
     public class UserService : Repository<KoinoniaUsers>, IUserService
     {
         private readonly IRepository<KoinoniaUsers> usersRepo;
-        private readonly AppSettings _appSettings;
 
-        public UserService(KoinoniaDbContext context, IRepository<KoinoniaUsers> usersRepo, IOptions<AppSettings> appSettings) : base(context)
+        public UserService(KoinoniaDbContext context, IRepository<KoinoniaUsers> usersRepo) : base(context)
         {
             this.usersRepo = usersRepo;
-            _appSettings = appSettings.Value;
         }
 
         public async Task<KoinoniaUsers> AddNewUser(KoinoniaUserModel model)
@@ -46,22 +44,6 @@ namespace Koinonia.Application.Services
             return NewUser;
         }
 
-        //public LoginAuthenticationResponse Authenticate(Guid UserId)
-        //{
-        //    var User = usersRepo.Get(UserId);
-
-        //    //return null is user was not found
-        //    if (User == null) return null;
-
-        //    //authentication succesful, so generate token
-        //    var token = GenerateJwtToken(User);
-        //}
-
-        //private string GenerateJwtToken(KoinoniaUsers user)
-        //{
-        //    // generate token that is valid for 7days
-        //    var tokenHandler = new JwtSecurityTokenHandler
-        //}
         public bool DeleteUser(Guid UserId)
         {
             usersRepo.Delete(UserId);

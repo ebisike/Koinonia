@@ -9,6 +9,8 @@ using Koinonia.Infra.Data.Context;
 using Koinonia.Infra.Ioc;
 using Koinonia.WebApi.Data;
 using Koinonia.WebApi.Helpers;
+using Koinonia.WebApi.Implementation;
+using Koinonia.WebApi.Interface;
 using Koinonia.WebApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -60,33 +62,11 @@ namespace Koinonia.WebApi
                 sw.SwaggerDoc("v1", new OpenApiInfo { Title = "Koinonia API", Version = "v1" });
             });
 
-            //services.Configure<DataProtectionTokenProviderOptions>(d => d.TokenLifespan = TimeSpan.FromMinutes(10));
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            //var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
-
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    .AddJwtBearer(jwtoptions =>
-            //    {
-            //        jwtoptions.RequireHttpsMetadata = false;
-            //        jwtoptions.SaveToken = false;
-
-            //        jwtoptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-            //        {
-            //            ValidateIssuerSigningKey = true,
-            //            IssuerSigningKey = new SymmetricSecurityKey(key),
-            //            ValidateIssuer = false,
-            //            ValidateAudience = false,
-            //            ClockSkew = TimeSpan.Zero
-            //        };
-            //    });
-
+            
             RegisterServices(services);
+            services.AddScoped<IAuthentication, Authentication>(); //used to authenticate the jwt token
         }
 
         private static void RegisterServices(IServiceCollection services)

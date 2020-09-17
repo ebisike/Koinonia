@@ -13,7 +13,6 @@ namespace Koinonia.Application.Interface
 {
     public interface IUserService : IRepository<KoinoniaUsers>
     {
-        //LoginAuthenticationResponse Authenticate(KoinoniaUserModel model);
         Task<KoinoniaUsers> AddNewUser(KoinoniaUserModel model);
         KoinoniaUsers GetUser(Guid UserId);
         ProfileViewModel GetUserProfile(Guid UserId);

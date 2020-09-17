@@ -10,6 +10,7 @@ using Koinonia.Application.Interface;
 using Koinonia.Application.ViewModels;
 using Koinonia.Application.ViewModels.Account;
 using Koinonia.Domain.Models;
+using Koinonia.WebApi.Interface;
 using Koinonia.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,7 @@ namespace Koinonia.WebApi.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly AppSettings _appSettings;
+        private readonly IAuthentication _authentication;
         private readonly IUserService userService;
         private readonly IEmailSender emailSender;
         private readonly IFollowService followService;
@@ -39,6 +41,7 @@ namespace Koinonia.WebApi.Controllers
             SignInManager<AppUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<AppSettings> appSettings,
+            IAuthentication authentication,
             IUserService userService,
             IEmailSender emailSender,
             IFollowService followService)
@@ -47,6 +50,7 @@ namespace Koinonia.WebApi.Controllers
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             _appSettings = appSettings.Value;
+            _authentication = authentication;
             this.userService = userService;
             this.emailSender = emailSender;
             this.followService = followService;
@@ -136,7 +140,7 @@ namespace Koinonia.WebApi.Controllers
                 var result = await userManager.CheckPasswordAsync(user, model.Password);
                 if (result)
                 {
-                    var response = Authenticate(Guid.Parse(user.Id), user.Email, user.UserName);
+                    var response = _authentication.Authenticate(Guid.Parse(user.Id), user.Email, user.UserName);
                     if(response == null)
                         return BadRequest(new { message = "Username or password is incorrect" });
                     
@@ -149,34 +153,34 @@ namespace Koinonia.WebApi.Controllers
             return BadRequest(new { message = "Sorry the username provide is not registered on this platform" });
         }
 
-        private LoginAuthenticationResponse Authenticate(Guid userId, string email, string username)
-        {
-            KoinoniaUsers user = userService.GetUser(userId);
+        //private LoginAuthenticationResponse Authenticate(Guid userId, string email, string username)
+        //{
+        //    KoinoniaUsers user = userService.GetUser(userId);
 
-            //return null if user is not found
-            if (user == null) return null;
+        //    //return null if user is not found
+        //    if (user == null) return null;
 
-            //user found successfully, now generate jwt token
-            var token = GenerateJwtToken(user);
+        //    //user found successfully, now generate jwt token
+        //    var token = GenerateJwtToken(user);
 
-            return new LoginAuthenticationResponse(user, token, email, username);
-        }
+        //    return new LoginAuthenticationResponse(user, token, email, username);
+        //}
 
-        private string GenerateJwtToken(KoinoniaUsers user)
-        {
-            // generate token that will last for 7days
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("Id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+        //private string GenerateJwtToken(KoinoniaUsers user)
+        //{
+        //    // generate token that will last for 7days
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(new[] { new Claim("Id", user.Id.ToString()) }),
+        //        Expires = DateTime.UtcNow.AddDays(7),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    return tokenHandler.WriteToken(token);
+        //}
         private async Task<string> GetUserRole(AppUser User)
         {
             foreach (var role in roleManager.Roles)

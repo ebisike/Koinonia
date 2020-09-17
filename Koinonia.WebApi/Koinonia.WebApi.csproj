@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\NewFolder\" />
     <Folder Include="wwwroot\Posts\ChurchNews\" />
     <Folder Include="wwwroot\Posts\Testimony\" />
     <Folder Include="wwwroot\Posts\UserStories\" />
