@@ -68,42 +68,48 @@ namespace Koinonia.WebApi.Controllers
         {
             try
             {
-                var AppUser = new AppUser()
+                //verify that email or username is not in use
+                if(await userManager.FindByNameAsync(model.Username) == null && await userManager.FindByEmailAsync(model.Email) == null)
                 {
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                    UserName = model.Username
-                };
-
-                var result = await userManager.CreateAsync(AppUser, model.Password);
-                if (result.Succeeded)
-                {
-                    //get the AppUser by Id
-                    var CreatedUser = GetUserByEmail(model.Email).Result;
-
-                    //assign the user to a role
-                    var roleResult = await userManager.AddToRoleAsync(CreatedUser, "user");
-                    if (roleResult.Succeeded)
+                    var AppUser = new AppUser()
                     {
-                        //build the koinonia user entity
-                        KoinoniaUserModel koinoniaUsers = new KoinoniaUserModel()
-                        {
-                            Id = Guid.Parse(CreatedUser.Id),
-                            FirstName = model.FirstName,
-                            LastName = model.LastName,
-                            Gender = model.Gender,
-                            stateOfOrigin = model.StateOfOrigin,
-                        };
-                        //pass the model to the UserService
-                        userService.AddNewUser(koinoniaUsers).Wait();
+                        Email = model.Email,
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Username
+                    };
 
-                        //call method to auto follow the leadpastor
-                        AutoFollow(koinoniaUsers.Id).Wait();
-                        return Ok();
+                    var result = await userManager.CreateAsync(AppUser, model.Password);
+                    if (result.Succeeded)
+                    {
+                        //get the AppUser by Id
+                        var CreatedUser = GetUserByEmail(model.Email).Result;
+
+                        //assign the user to a role
+                        var roleResult = await userManager.AddToRoleAsync(CreatedUser, "user");
+                        if (roleResult.Succeeded)
+                        {
+                            //build the koinonia user entity
+                            KoinoniaUserModel koinoniaUsers = new KoinoniaUserModel()
+                            {
+                                Id = Guid.Parse(CreatedUser.Id),
+                                FirstName = model.FirstName,
+                                LastName = model.LastName,
+                                Gender = model.Gender,
+                                stateOfOrigin = model.StateOfOrigin,
+                            };
+                            //pass the model to the UserService
+                            userService.AddNewUser(koinoniaUsers).Wait();
+
+                            //call method to auto follow the leadpastor
+                            AutoFollow(koinoniaUsers.Id).Wait();
+                            return Ok();
+                        }
+                        return BadRequest("User was not added to a role");
                     }
-                    return BadRequest(new { message = "User was not added to a role" });
+                    return BadRequest("Registration Failed");
                 }
-                return BadRequest("Registration Failed");
+                return BadRequest("Username and/or Email is Already in use");
+                
             }
             catch (Exception ex)
             {
@@ -137,8 +143,8 @@ namespace Koinonia.WebApi.Controllers
             var user = await userManager.FindByNameAsync(model.username);
             if(user != null)
             {
-                var result = await userManager.CheckPasswordAsync(user, model.Password);
-                if (result)
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: false);
+                if (result.Succeeded)
                 {
                     var response = _authentication.Authenticate(Guid.Parse(user.Id), user.Email, user.UserName);
                     if(response == null)
