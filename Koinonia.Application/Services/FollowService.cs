@@ -3,6 +3,7 @@ using Koinonia.Domain.Interface;
 using Koinonia.Domain.Models;
 using Koinonia.Infra.Data.Context;
 using Koinonia.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,21 @@ namespace Koinonia.Application.Services
             await followership.AddNewAsync(followers);
             await followership.SaveChangesAsync();
             return followers;
+        }
+
+        public IQueryable<KoinoniaUsers> GetAllFollowers(Guid userId)
+        {
+            var followers = followership.GetAll()
+                .Where(x => x.UserId == userId)
+                .Include(u => u.Users)
+                .Select(f => new
+                {
+                    firstname = f.Users.FirstName,
+                    lastName = f.Users.LastName,
+                    userId = f.Users.Id,
+                });
+
+            return (IQueryable<KoinoniaUsers>)followers;
         }
 
         public async Task<bool> UnFollowUser(Guid FollowerId, Guid UserId)

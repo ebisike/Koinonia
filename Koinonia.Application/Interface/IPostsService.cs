@@ -15,9 +15,9 @@ namespace Koinonia.Application.Interface
         Task<Posts> AddNewUserPost(PostsViewModel model, List<string> fileName);
         Task<Posts> GetPost(Guid PostId);
         Task<Posts> UpdatePost(PostsViewModel model, List<string> fileName);
-        IQueryable<Posts> GetAllUserStories();
-        IQueryable<Posts> GetAllChurchNews();
-        IQueryable<Posts> GetAllTestimonies();
+        IQueryable<Posts> GetAllUserStories(int size);
+        IQueryable<Posts> GetAllChurchNews(int size);
+        IQueryable<Posts> GetAllTestimonies(int size);
         void DeletePost(Guid PostId);
     }
 }

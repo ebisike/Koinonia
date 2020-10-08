@@ -35,14 +35,20 @@ namespace Koinonia.Application.Services
             await commentRepo.AddNewAsync(usercomment);
             await commentRepo.SaveChangesAsync();
             return usercomment;
-        }        
+        }
 
-        public IQueryable<Posts> GetPostComments(Guid PostId)
+        public async void DeleteComment(Guid commentId)
         {
-            var comments = _context.Comment
-                .Where(x => x.Id == PostId)
-                .Select(x => x.Post)
-                .Include(x => x.User);
+            commentRepo.Delete(commentId);
+            await commentRepo.SaveChangesAsync();
+        }
+
+        public IQueryable<Comments> GetPostComments(Guid PostId)
+        {
+            var comments = commentRepo.GetAll()
+                .Where(x => x.PostId == PostId)
+                .Include(u => u.Users);
+
             return comments;
         }
     }

@@ -20,7 +20,7 @@ namespace Koinonia.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize(Roles = "Pastor, user")]
     public class UserStoriesController : ControllerBase
     {
         private readonly IPostsService postService;
@@ -60,13 +60,6 @@ namespace Koinonia.WebApi.Controllers
         public IActionResult Index()
         {
             var stories = postService.GetAllUserStories();
-            //var stories = postService.GetAllUserStories().SelectMany(d => d.PostComments, (User, Comment) => new
-            //{
-            //    userName = User.User.FirstName + " " + User.User.LastName,
-            //    Comment = Comment.Usercomment,
-            //    dateCommented = Comment.DateCommented.ToLongDateString(),
-            //    PostId = Comment.PostId
-            //});
             return Ok(stories);
         }
 

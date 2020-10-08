@@ -102,7 +102,7 @@ namespace Koinonia.WebApi.Controllers
 
                             //call method to auto follow the leadpastor
                             AutoFollow(koinoniaUsers.Id).Wait();
-                            return Ok();
+                            return Ok(new { message = "Your Account has been created succesfully"});
                         }
                         return BadRequest("User was not added to a role");
                     }
@@ -143,7 +143,7 @@ namespace Koinonia.WebApi.Controllers
             var user = await userManager.FindByNameAsync(model.username);
             if(user != null)
             {
-                var result = await signInManager.PasswordSignInAsync(user, model.Password, false, lockoutOnFailure: false);
+                var result = await signInManager.PasswordSignInAsync(user, model.Password, isPersistent: true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     var response = _authentication.Authenticate(Guid.Parse(user.Id), user.Email, user.UserName);
@@ -155,38 +155,11 @@ namespace Koinonia.WebApi.Controllers
                     string userRole = await GetUserRole(user);
                     return Ok(new { User = response, role = userRole});
                 }
+                return BadRequest("Sorry Username and password do not match");
             }
             return BadRequest(new { message = "Sorry the username provide is not registered on this platform" });
         }
 
-        //private LoginAuthenticationResponse Authenticate(Guid userId, string email, string username)
-        //{
-        //    KoinoniaUsers user = userService.GetUser(userId);
-
-        //    //return null if user is not found
-        //    if (user == null) return null;
-
-        //    //user found successfully, now generate jwt token
-        //    var token = GenerateJwtToken(user);
-
-        //    return new LoginAuthenticationResponse(user, token, email, username);
-        //}
-
-        //private string GenerateJwtToken(KoinoniaUsers user)
-        //{
-        //    // generate token that will last for 7days
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(new[] { new Claim("Id", user.Id.ToString()) }),
-        //        Expires = DateTime.UtcNow.AddDays(7),
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        //    };
-
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token);
-        //}
         private async Task<string> GetUserRole(AppUser User)
         {
             foreach (var role in roleManager.Roles)

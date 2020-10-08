@@ -2,6 +2,7 @@
 using Koinonia.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,5 +12,6 @@ namespace Koinonia.Application.Interface
     {
         Task<Followers> FollowUser(Guid FollowerId, Guid UserId);
         Task<bool> UnFollowUser(Guid FollowerId, Guid UserId);
+        IQueryable<KoinoniaUsers> GetAllFollowers(Guid userId);
     }
 }

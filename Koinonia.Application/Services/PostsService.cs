@@ -18,6 +18,7 @@ namespace Koinonia.Application.Services
     public class PostsService : Repository<Posts>, IPostsService
     {
         private readonly IRepository<Posts> postRepo;
+        public int MaxTake { get; set; } = 100;
 
         public PostsService(KoinoniaDbContext context, IRepository<Posts> PostRepo) : base(context)
         {
@@ -62,9 +63,11 @@ namespace Koinonia.Application.Services
             postRepo.SaveChanges(); 
         }
 
-        public IQueryable<Posts> GetAllChurchNews()
+        public IQueryable<Posts> GetAllChurchNews(int size)
         {
             var ChurchNews = _context.Post
+                .Skip((size - 1) * MaxTake)
+                .Take(MaxTake)
                 .Where(x => x.PostCategory == Category.News)
                 .Include(x => x.User)
                 .Include(x => x.PostLikes)
@@ -74,7 +77,7 @@ namespace Koinonia.Application.Services
             return ChurchNews;
         }
 
-        public IQueryable<Posts> GetAllTestimonies()
+        public IQueryable<Posts> GetAllTestimonies(int size)
         {
             var Testimonies = _context.Post
                 .Where(x => x.PostCategory == Category.Testimony)
@@ -86,27 +89,13 @@ namespace Koinonia.Application.Services
             return Testimonies;
         }
 
-        public IQueryable<Posts> GetAllUserStories()
+        public IQueryable<Posts> GetAllUserStories(int size)
         {
             var UserStories = _context.Post
                 .Where(x => x.PostCategory == Category.UserStories)
                 .Include(u => u.User)
                 .Include(l => l.PostLikes)
                 .Include(c => c.PostComments);
-            //.OrderByDescending(x => x.DatePosted.ToShortTimeString());
-
-            //var reult = _context.Post
-            //    .Where(category => category.PostCategory == Category.UserStories)
-            //    .Include(u => u.User)
-            //    .Include(likes => likes.PostLikes)
-            //    .Include(comments => comments.PostComments)
-            //    .SelectMany(comment=>comment.PostComments, (user, comment) => new
-            //    { 
-            //        user = user.User,
-            //        comment = comment.Usercomment,
-            //        date = comment.DateCommented,
-            //        post = comment.Post
-            //    });
 
             return UserStories;
         }
